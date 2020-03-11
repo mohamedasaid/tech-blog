@@ -1,6 +1,6 @@
 const Post = require("../models/Post");
 const cloudinary = require("cloudinary");
-//const ErrorCustomize = require("../utils/errorCustomize");
+const ErrorCustomize = require("../utils/errorCustomize");
 
 // @desc Get all Posts
 // @route GET /api/v1/blog
