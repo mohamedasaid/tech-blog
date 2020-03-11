@@ -16,7 +16,7 @@ npm run dev
 # Run in prod mode
 npm start
 
-Demo
+# Demo
 The Blog is live at https://mgq-blog.herokuapp.com/api/v1/blog
 
 
