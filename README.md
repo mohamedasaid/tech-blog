@@ -2,12 +2,12 @@
 tech-blog repo
 
 
-Blog 
+# Blog 
 Blog application, which is a blog website
 bootstrap template blog 
 
 
-Install Dependencies
+# Install Dependencies
 npm install
 Run App
 # Run in dev mode
