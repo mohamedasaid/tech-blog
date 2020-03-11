@@ -18,6 +18,6 @@ npm start
 
 # Demo
 The Blog is live at https://mgq-blog.herokuapp.com/api/v1/blog
-Version: 1.0.0
+Version: 1.0.0\
 License: MIT\
-Author: Mohamed Said__
+Author: Mohamed Said
