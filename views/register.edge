@@ -1,0 +1,63 @@
+@layout('layouts.app')
+
+
+@section('content')
+
+   <!-- Page Header -->
+   
+   <header class="masthead" style="background-image:
+   url('/img/register-bg.jpg')">
+   <div class="overlay"></div>
+   <div class="container">
+     <div class="row">
+       <div class="col-lg-8 col-md-10 mx-auto">
+         <div class="page-heading">
+           <h1>Get started</h1>
+          
+         </div>
+       </div>
+     </div>
+   </div>
+ </header>
+
+ <div class ="container">
+     <div class="row">
+         <div class="col-md-8 offset-md-2">
+             <form action="/api/v1/auth/users/register" method="POST" enctype="multipart/form-data" >
+
+              <div class="control-group ">
+                  <div class="form-group floating-label-form-group controls">
+                    
+                      <label>Username</label>
+                         <input type="text" name='username' placeholder="Name" class="from-control">
+
+                      </div>
+
+                  </div>
+
+                 <div class="control-group ">
+                     <div class="form-group floating-label-form-group controls">
+                         <label>Email</label>
+                            <input type="text" name='email' placeholder="Email" class="from-control">
+
+                         </div>
+
+                     </div>
+                     <div class="control-group ">
+                            <div class="form-group floating-label-form-group controls">
+                                <label>Password</label>
+                                   <input type="text" name='password' placeholder="Password" class="from-control">
+       
+                                </div>
+                            </div>
+
+
+                                    <div class="from-group my-4 text-center">
+                                        <button class="btn btn-primary">Register</button>
+                                    </div>
+             </form>
+         </div>
+     </div>
+ </div>
+
+@endsection
