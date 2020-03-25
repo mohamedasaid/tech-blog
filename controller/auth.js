@@ -18,7 +18,7 @@ module.exports = {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
       // console.log(Object.keys(username.errors));
-      return res.redirect("/api/v1/auth/register");
+      res.redirect("/api/v1/auth/register");
     }
 
     const newUser = await User({
@@ -30,23 +30,6 @@ module.exports = {
     await User.register(newUser, req.body.password);
     res.redirect("/api/v1/auth/login");
   },
-
-  // // Post /login
-  // postLogin(req, res, next) {
-  //   const { email, password } = req.body;
-  //   // Validate the email and password
-  //   if (!email || !password) {
-  //     return res.redirect("/api/v1/auth/login");
-  //   }
-
-  //   passport.authenticate("local", {
-  //     failureRedirect: "/api/v1/auth/login",
-  //     failureFlash: true
-  //   }),
-  //     function(req, res, next) {
-  //       res.redirect("/");
-  //     };
-  // },
 
   async postLogin(req, res, next) {
     const { email, password } = req.body;
@@ -67,18 +50,6 @@ module.exports = {
       }
     });
   },
-  // postLogin(req, res, next) {
-  //   const { email, password } = req.body;
-
-  //   // Validate the email and password
-  //   if (!email || !password) {
-  //     return res.redirect("/api/v1/auth/login");
-  //   }
-  //   passport.authenticate("local", {
-  //     successRedirect: "/api/v1/auth/login",
-  //     failureRedirect: "/api/v1/auth/login"
-  //   })(req, res, next);
-  // },
 
   // GET /logout
   getLogout(req, res, next) {
@@ -87,7 +58,3 @@ module.exports = {
     res.redirect("/api/v1/blog");
   }
 };
-
-// @desc Login user
-// @route Get /api/v1/auth/login
-// @access Public
