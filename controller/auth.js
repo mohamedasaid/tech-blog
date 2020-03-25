@@ -1,61 +1,94 @@
 const User = require("../models/User");
+const passport = require("passport");
 const bcrypt = require("bcrypt");
 
 // @desc Login page
 // @route Get /api/v1/auth/register
 // @access Public
-exports.getRegister = (req, res, next) => {
-  res.render("register");
-};
+// exports.getRegister = (req, res, next) => {
+//   res.render("register");
+// };
 
 // @desc Register user
 // @route Post /api/v1/users/register
 // @access Public
-exports.register = async (req, res, next) => {
-  const { username, email, password } = req.body;
-  const user = User.create(req.body, (error, user) => {
-    if (!username || !email || !password) {
-      return res.redirect("/api/v1/auth/register");
+module.exports = {
+  // Register the user
+  async postRegister(req, res, next) {
+    const { username, email, password } = req.body;
+    if (!username || !email || password) {
+      console.log(Object.keys(username.errors));
+      res.redirect("/api/v1/auth/register");
     }
 
-    const token = user.getSignedJwtToken();
+    const newUser = await User({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    });
 
-    //res.redirect("/api/v1/blog");
-    res
-      .status(200)
+    await User.register(newUser, req.body.password);
+    //console.log(err.errors);
+    res.redirect("/api/v1/auth/login");
+  },
 
-      .redirect("/api/v1/blog");
-  });
+  // // Post /login
+  // postLogin(req, res, next) {
+  //   const { email, password } = req.body;
+  //   // Validate the email and password
+  //   if (!email || !password) {
+  //     return res.redirect("/api/v1/auth/login");
+  //   }
+
+  //   passport.authenticate("local", {
+  //     failureRedirect: "/api/v1/auth/login",
+  //     failureFlash: true
+  //   }),
+  //     function(req, res, next) {
+  //       res.redirect("/");
+  //     };
+  // },
+
+  async postLogin(req, res, next) {
+    const { email, password } = req.body;
+    // try to find the user
+    await User.findOne({ email }, (error, user) => {
+      if (user) {
+        // compare passwords.
+        bcrypt.compare(password, user.password, (error, same) => {
+          if (same) {
+            req.session.userId = user._id;
+            res.redirect("/api/v1/blog");
+          } else {
+            res.redirect("/api/v1/auth/login");
+          }
+        });
+      } else {
+        return res.redirect("/api/v1/auth/login");
+      }
+    });
+  },
+  // postLogin(req, res, next) {
+  //   const { email, password } = req.body;
+
+  //   // Validate the email and password
+  //   if (!email || !password) {
+  //     return res.redirect("/api/v1/auth/login");
+  //   }
+  //   passport.authenticate("local", {
+  //     successRedirect: "/api/v1/auth/login",
+  //     failureRedirect: "/api/v1/auth/login"
+  //   })(req, res, next);
+  // },
+
+  // GET /logout
+  getLogout(req, res, next) {
+    req.logout();
+    req.session.destroy();
+    res.redirect("/api/v1/blog");
+  }
 };
 
 // @desc Login user
 // @route Get /api/v1/auth/login
 // @access Public
-
-exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
-
-  // Validate the email and password
-  if (!email || !password) {
-    return res.redirect("/api/v1/auth/login");
-  }
-
-  // Check for the user
-  const user = await User.findOne({ email }).select("+password");
-  if (!user) {
-    //return res.status(404).redirect("/api/auth/login");
-    res.redirect("/api/v1/auth/login");
-  }
-
-  // Check password match
-  const isMatch = await user.matchPassword(password);
-
-  if (!isMatch || isMatch === null || !user) {
-    res.redirect("/api/v1/auth/login");
-  }
-
-  // Create the token
-  //const token = user.getSignedJwtToken();
-
-  res.redirect("/api/v1/blog");
-};

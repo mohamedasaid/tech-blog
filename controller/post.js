@@ -73,7 +73,10 @@ exports.getContact = (req, res, next) => {
 // @route GET /api/v1/blog/posts/new
 // @access Public
 exports.getWriteBlogPage = (req, res, next) => {
-  res.render("create");
+  if (req.session.userId) {
+    return res.render("create");
+  }
+  res.redirect("/api/v1/auth/login");
 };
 
 // @desc Get the Posts by id
