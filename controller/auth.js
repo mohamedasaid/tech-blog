@@ -16,9 +16,9 @@ module.exports = {
   // Register the user
   async postRegister(req, res, next) {
     const { username, email, password } = req.body;
-    if (!username || !email || password) {
-      console.log(Object.keys(username.errors));
-      res.redirect("/api/v1/auth/register");
+    if (!username || !email || !password) {
+      // console.log(Object.keys(username.errors));
+      return res.redirect("/api/v1/auth/register");
     }
 
     const newUser = await User({
@@ -28,7 +28,6 @@ module.exports = {
     });
 
     await User.register(newUser, req.body.password);
-    //console.log(err.errors);
     res.redirect("/api/v1/auth/login");
   },
 
